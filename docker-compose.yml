@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  nextjs:
+    image: node:18
+    container_name: next-app
+    working_dir: /frontend
+    volumes:
+      - ./frontend/.:/frontend
+    ports:
+      - "3000:3000"
+    # command: sh -c "npm install && npm run build && npm start"
+    command: sh -c "npm start"
+    depends_on:
+      - mysql
+
+  nodejs:
+    image: node:18
+    container_name: nodejs
+    working_dir: /backend
+    volumes:
+      - ./backend/:/backend
+    ports:
+      - "4000:4000"
+    command: sh -c "node server.js"
+    depends_on:
+      - mysql
+      
+  nginx:
+    image: nginx
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default:/etc/nginx/sites-available/default
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    entrypoint: sh -c "mkdir -p /etc/nginx/sites-enabled && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/ && nginx -g 'daemon off;'"
+    depends_on:
+      - nextjs
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: neuman
