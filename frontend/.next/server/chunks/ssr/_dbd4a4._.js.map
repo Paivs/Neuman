@@ -1,0 +1,9 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///frontend/src/app/page.jsx"],"sourcesContent":["import Image from \"next/image\";\n\nexport default function Home() {\n  return <>\n    <p>Olá mundo!</p>\n    <p>Teste 6</p>\n   </>;\n}\n"],"names":[],"mappings":";;;;AAAA;;;AAEe,SAAS;IACtB,qBAAO;;0BACL,8OAAC;0BAAE;;;;;;0BACH,8OAAC;0BAAE;;;;;;;;AAEP"}},
+    {"offset": {"line": 34, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
+    {"offset": {"line": 45, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 45, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}
