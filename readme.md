@@ -1,8 +1,28 @@
-# Docker Compose
+# Neuman
+
+Neuman é uma plataforma de versionamento, gerenciamento e compartilhamento de documentos. Com ele, você pode controlar as versões de seus documentos, gerenciar o acesso e compartilhar com outros usuários.
+
+
+# Sobre a infraestrutura da aplicação
+A infraestrutura do projeto inclui:
+
+- Back: Node.js
+- Front: Next.js
+- Design: Figma
+- BD: MySQL
+- Docs: Docs do Google compartilhado
+- Infra: VPS ubuntu hostinger
+- Nginx webserver/proxy reverso
+- Docker
+- CDN firebase
+- Versionamento: Git
+
+# Get started
+## Docker Compose
 
 Este projeto utiliza o Docker Compose para orquestrar os containers. Para subir o ambiente, basta executar o comando `docker-compose up` na pasta raiz do projeto.
 
-# Variáveis de ambiente
+## Variáveis de ambiente
 
 As variáveis de ambiente do projeto estão configuradas no arquivo `.env` na pasta raiz do projeto. É importante respeitar as seguintes variáveis:
 
@@ -12,7 +32,7 @@ As variáveis de ambiente do projeto estão configuradas no arquivo `.env` na pa
 * `DB_HOST`: host do banco de dados
 * `DB_PORT`: porta do banco de dados
 
-# Ambiente de desenvolvimento
+## Ambiente de desenvolvimento
 
 É possível fazer o docker-compose e montar o front, back e banco em ambiente de desenvolvimento... No entanto, as respostas demoram a surtir efeito. Recomenda-se montar o docker somente do banco  
 
@@ -26,10 +46,10 @@ Caso já o tenha configurado
 docker start mysql
 ```
 
-# Swagger
+## Swagger
 
 A documentação da API foi gerada com o Swagger e pode ser acessada em `http://localhost:4000/api-docs`.
 
-# Nginx
+## Nginx
 
 O Nginx é usado como proxy reverso para o frontend e o backend. A configuração do Nginx está no arquivo `nginx/default`.
