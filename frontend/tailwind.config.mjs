@@ -7,7 +7,15 @@ export default {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        standart: "10px",
+      },
       colors: {
+        primary: "var(--primary)",
+        "primary-alt": "var(--primary-alt)",
+        secondary: "var(--secondary)",
+        "secondary-alt": "var(--secondary-alt)",
+        accent: "var(--accent)",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
@@ -15,3 +23,4 @@ export default {
   },
   plugins: [],
 };
+
