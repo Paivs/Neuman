@@ -53,3 +53,5 @@ A documentação da API foi gerada com o Swagger e pode ser acessada em `http://
 ## Nginx
 
 O Nginx é usado como proxy reverso para o frontend e o backend. A configuração do Nginx está no arquivo `nginx/default`.
+
+teste
