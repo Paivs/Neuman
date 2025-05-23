@@ -7,8 +7,16 @@ Neuman é uma plataforma de versionamento, gerenciamento e compartilhamento de d
 A infraestrutura do projeto inclui:
 
 - Back: Node.js
-- Front: Next.js
-- Design: Figma
+- Front: 
+  - Next.js
+  - Tailwind CSS
+  - Radix UI + shadcn/ui
+  - Framer Motion
+  - Sonner Toast
+  - Lucide-react
+  - React Hook Form + Zod
+  - Zustand
+- Design: Figma / Canva
 - BD: MySQL
 - Docs: Docs do Google compartilhado
 - Infra: VPS ubuntu hostinger
@@ -46,7 +54,7 @@ Caso já o tenha configurado
 docker start mysql
 ```
 
-## Swagger
+## Swagger 
 
 A documentação da API foi gerada com o Swagger e pode ser acessada em `http://localhost:4000/api-docs`.
 
