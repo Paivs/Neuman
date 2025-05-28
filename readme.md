@@ -25,41 +25,97 @@ A infraestrutura do projeto inclui:
 - CDN firebase
 - Versionamento: Git
 
-# Get started
-## Docker Compose
+### Infraestrutura
+- VPS Ubuntu (Hostinger)
+- Coolify para deploy
+- Firebase CDN
+- MySQL
+- Nginx
 
-Este projeto utiliza o Docker Compose para orquestrar os containers. Para subir o ambiente, basta executar o comando `docker-compose up` na pasta raiz do projeto.
+## Começando
 
-## Variáveis de ambiente
+### Pré-requisitos
+- Node.js 18+
+- Postgres 15+
+- npm
 
-As variáveis de ambiente do projeto estão configuradas no arquivo `.env` na pasta raiz do projeto. É importante respeitar as seguintes variáveis:
+### Configuração do Ambiente
 
-* `DB_NAME`: nome do banco de dados
-* `DB_USER`: usuário do banco de dados
-* `DB_PASS`: senha do banco de dados
-* `DB_HOST`: host do banco de dados
-* `DB_PORT`: porta do banco de dados
-
-## Ambiente de desenvolvimento
-
-É possível fazer o docker-compose e montar o front, back e banco em ambiente de desenvolvimento... No entanto, as respostas demoram a surtir efeito. Recomenda-se montar o docker somente do banco  
-
-Caso nunca tenha criado o container
-```bash 
-docker run -d --name mysql --restart always -e MYSQL_ROOT_PASSWORD=neuman@123 -e MYSQL_DATABASE=neuman -e MYSQL_USER=dev -e MYSQL_PASSWORD=dev@123 -p 3306:3306 -v mysql_data:/var/lib/mysql mysql
-```
-
-Caso já o tenha configurado
+1. Clone o repositório
 ```bash
-docker start mysql
+git clone https://github.com/paivs/neuman.git
+cd neuman
 ```
 
-## Swagger 
+2. Configure as variáveis de ambiente
+```bash
+# Backend
+cd backend
+cp .env.example .env
+# Configure as variáveis no .env
 
-A documentação da API foi gerada com o Swagger e pode ser acessada em `http://localhost:4000/api-docs`.
+# Frontend
+cd ../frontend
+cp .env.example .env
+# Configure as variáveis no .env
+```
 
-## Nginx
+3. Instale as dependências
+```bash
+# Backend
+cd backend
+npm install
 
-O Nginx é usado como proxy reverso para o frontend e o backend. A configuração do Nginx está no arquivo `nginx/default`.
+# Frontend
+cd ../frontend
+npm install
+```
 
-teste final
+4. Inicie o banco de dados
+```bash
+cd bd
+docker build -t neuman-postgres .
+
+docker run -d --name neuman-db -e POSTGRES_DB=neuman  -e POSTGRES_USER=neuman_user -e POSTGRES_PASSWORD=supersecret -p 5432:5432 neuman-postgres
+
+```
+
+5. Inicie os serviços
+```bash
+# Backend
+cd backend
+npm run dev
+
+# Frontend
+cd ../frontend
+npm run dev
+```
+
+## Documentação
+
+- [Infraestrutura](/docs/infraestrutura.md)
+- [Roadmap](/docs/roadmap.md)
+- API: http://localhost:8085/api-docs (Swagger)
+
+## Desenvolvimento
+
+### Estrutura do Projeto
+```
+neuman/
+├── backend/         # API Node.js
+├── frontend/        # Aplicação Next.js
+├── docs/           # Documentação
+└── tests/          # Testes
+```
+
+### Padrões de Código
+- ESLint para linting
+- Prettier para formatação
+- Conventional Commits
+
+## Deploy
+
+O deploy é feito automaticamente via Coolify quando há push na branch main. Os Dockerfiles necessários estão na raiz de cada projeto (frontend/backend).
+
+## Licença
+Este projeto está licenciado sob a GNU General Public License v3.0 - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
