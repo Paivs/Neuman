@@ -89,9 +89,8 @@ const ClientsPage = () => {
             {clients.map((client, index) => (
               <ClientCard
                 key={client.id}
-                name={client.name}
-                email={client.email}
-                caseCount={client.caseCount}
+                name={client.user.name}
+                email={client.user.email}
                 delay={index * 0.1}
               />
             ))}

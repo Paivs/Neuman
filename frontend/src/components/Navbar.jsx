@@ -12,7 +12,7 @@ export default function Navbar() {
   return (
     <header className="shadow-md bg-[#10182A] backdrop-blur-md">
       <nav
-        className="max-w-screen-xl mx-auto flex items-center justify-between p-4"
+        className="container mx-auto flex items-center justify-between py-4"
         aria-label="Main navigation"
       >
         {/* Logo */}
