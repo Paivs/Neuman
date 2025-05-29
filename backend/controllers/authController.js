@@ -9,6 +9,14 @@ exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    // Verificar se o usuário já existe
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Email já está em uso"
+      });
+    }
+
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
@@ -17,9 +25,17 @@ exports.register = async (req, res) => {
       role: "lawyer", // se quiser permitir escolha, valide o role no req.body
     });
 
+    // Criar token após registro
+    const token = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "10m" }
+    );
+
     res.status(201).json({
       message: "Usuário criado com sucesso",
       userId: user.id,
+      token // Retornar token no registro também
     });
   } catch (error) {
     console.error(error);
