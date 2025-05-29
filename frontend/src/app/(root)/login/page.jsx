@@ -4,6 +4,7 @@ import React from "react";
 
 import { motion } from "motion/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
 
 import LoginForm from "./form"
 
@@ -57,9 +58,9 @@ export default function LoginPage() {
 
           <p className="text-sm text-center text-slate-400 mt-8">
             Não tem uma conta?{" "}
-            <a href="#" className="text-sky-400 hover:underline">
+            <Link href="/register" className="text-sky-400 hover:underline">
               Crie uma agora
-            </a>
+            </Link>
           </p>
         </div>
         <div className="mt-6 flex justify-center space-x-4"></div>

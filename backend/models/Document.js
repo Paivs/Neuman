@@ -37,7 +37,7 @@ const Document = sequelize.define('Document', {
   }
 }, {
   tableName: 'documents',
-  timestamps: false,
+  timestamps: true,
   underscored: true
 });
 

@@ -7,7 +7,7 @@ const comment = require('./routes/comment');
 const user = require('./routes/user');
 const cors = require("cors");
 const client = require('./routes/client');
-
+const dashboard = require('./routes/dashboard')
 
 
 
@@ -34,6 +34,7 @@ app.use("/users", user);
 app.use("/documents", document);
 app.use('/comments', comment);
 app.use('/clients', client);
+app.use('/dashboard', dashboard)
 
 
 

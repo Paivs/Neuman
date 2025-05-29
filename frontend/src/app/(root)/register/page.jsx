@@ -1,15 +1,12 @@
 "use client";
 
 import React from "react";
-
 import { motion } from "motion/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Briefcase, UserCheck, UserPlus } from "lucide-react";
+import RegisterForm from "./form";
 
-import LoginForm from "./form"
-
-import { Briefcase, UserCheck, LogIn } from "lucide-react";
-
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <div className="min-h-[calc(100vh-120px)] flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 to-slate-800">
       <motion.div
@@ -21,15 +18,15 @@ export default function LoginPage() {
         <div className="relative bg-slate-800/70 p-8 rounded-xl shadow-2xl border border-slate-700 backdrop-blur-lg">
           <div className="absolute -top-10 left-1/2 -translate-x-1/2">
             <div className="w-20 h-20 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
-              <Briefcase size={40} className="text-white" />
+              <UserPlus size={40} className="text-white" />
             </div>
           </div>
 
           <h1 className="text-3xl font-bold text-center mb-2 mt-10 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-blue-500">
-            Acessar Neuman
+            Criar Conta no Neuman
           </h1>
           <p className="text-center text-slate-400 mb-8">
-            Gerencie seus documentos e casos de forma eficiente.
+            Faça seu registro e comece a gerenciar seus documentos hoje mesmo.
           </p>
 
           <Tabs defaultValue="lawyer" className="w-full">
@@ -48,21 +45,20 @@ export default function LoginPage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="lawyer" className="mt-6">
-              <LoginForm userType="lawyer" />
+              <RegisterForm userType="lawyer" />
             </TabsContent>
             <TabsContent value="client" className="mt-6">
-              <LoginForm userType="client" />
+              <RegisterForm userType="client" />
             </TabsContent>
           </Tabs>
 
           <p className="text-sm text-center text-slate-400 mt-8">
-            Não tem uma conta?{" "}
-            <a href="#" className="text-sky-400 hover:underline">
-              Crie uma agora
+            Já tem uma conta?{" "}
+            <a href="/login" className="text-sky-400 hover:underline">
+              Acesse aqui
             </a>
           </p>
         </div>
-        <div className="mt-6 flex justify-center space-x-4"></div>
       </motion.div>
     </div>
   );

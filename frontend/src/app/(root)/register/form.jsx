@@ -1,51 +1,45 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "motion/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogIn } from "lucide-react";
-import { useUser } from "@/core/UserContext"; // certifique-se que o path está correto
-import { loginUser } from "@/lib/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { registerUser } from "@/lib/auth"; // Ajuste o import do seu serviço de registro
 
-export default function LoginForm({ userType }) {
+export default function RegisterForm({ userType }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [caseCode, setCaseCode] = useState("");
   const router = useRouter();
-  const { login } = useUser();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("As senhas não coincidem.");
+      return;
+    }
 
     const payload = {
+      name,
       email,
       password,
-      userType,
+      role: userType,
       ...(userType === "client" && { caseCode }),
     };
 
     try {
-      const { user } = await loginUser(email, password, userType, caseCode);
-
-      toast.success(`Bem-vindo, ${user.name}!`, {
-        description: "Login realizado com sucesso.",
-        duration: 1900,
-      });
-
-      // Redirecionar para o dashboard
-      setTimeout(() => {
-        login(user)
-        router.push("/dashboard");
-      }, 2000);
-    } catch (error) {
-      toast.error("Email ou senha incorretos.", {
-        description: "Verifique suas credenciais e tente novamente.",
-      });
-      console.error(error);
+      await registerUser(payload);
+      toast.success("Conta criada com sucesso! Faça login para continuar.");
+      router.push("/login");
+    } catch (err) {
+      toast.error("Erro ao criar conta. Verifique os dados e tente novamente.");
+      console.error(err);
     }
   }
 
@@ -54,9 +48,23 @@ export default function LoginForm({ userType }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-6"
       onSubmit={handleSubmit}
+      className="space-y-6"
     >
+      <div>
+        <Label htmlFor={`${userType}-name`} className="text-slate-300">
+          Nome Completo
+        </Label>
+        <Input
+          type="text"
+          id={`${userType}-name`}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Seu nome completo"
+          className="mt-1 bg-slate-700/50 border-slate-600 text-white"
+          required
+        />
+      </div>
       <div>
         <Label htmlFor={`${userType}-email`} className="text-slate-300">
           Email
@@ -67,7 +75,8 @@ export default function LoginForm({ userType }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="seuemail@example.com"
-          className="mt-1 bg-slate-700/50 border-slate-600  text-white text-white"
+          className="mt-1 bg-slate-700/50 border-slate-600 text-white"
+          required
         />
       </div>
       <div>
@@ -80,7 +89,22 @@ export default function LoginForm({ userType }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="********"
-          className="mt-1 bg-slate-700/50 border-slate-600  text-white"
+          className="mt-1 bg-slate-700/50 border-slate-600 text-white"
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor={`${userType}-confirm-password`} className="text-slate-300">
+          Confirmar Senha
+        </Label>
+        <Input
+          type="password"
+          id={`${userType}-confirm-password`}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="********"
+          className="mt-1 bg-slate-700/50 border-slate-600 text-white"
+          required
         />
       </div>
       {userType === "client" && (
@@ -94,7 +118,7 @@ export default function LoginForm({ userType }) {
             value={caseCode}
             onChange={(e) => setCaseCode(e.target.value)}
             placeholder="Ex: CX12345"
-            className="mt-1 bg-slate-700/50 border-slate-600  text-white"
+            className="mt-1 bg-slate-700/50 border-slate-600 text-white"
           />
         </div>
       )}
@@ -102,15 +126,8 @@ export default function LoginForm({ userType }) {
         type="submit"
         className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold"
       >
-        <LogIn size={18} className="mr-2" />
-        Entrar como {userType === "lawyer" ? "Advogado" : "Cliente"}
+        Cadastrar como {userType === "lawyer" ? "Advogado" : "Cliente"}
       </Button>
-      <p className="text-xs text-center text-slate-400">
-        Esqueceu sua senha?{" "}
-        <a href="#" className="text-sky-400 hover:underline">
-          Recuperar senha
-        </a>
-      </p>
     </motion.form>
   );
 }

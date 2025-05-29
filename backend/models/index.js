@@ -1,3 +1,4 @@
+//models/index.js
 const Sequelize = require("sequelize");
 const sequelize = require("../config/database"); // sua instância de conexão
 
@@ -65,10 +66,10 @@ Comment.belongsTo(models.DocumentVersion, {
 });
 Comment.belongsTo(models.User, { foreignKey: "author_id", as: "author" });
 
-ActivityLog.belongsTo(models.User, { foreignKey: "user_id" });
-ActivityLog.belongsTo(models.Document, { foreignKey: "document_id" });
-ActivityLog.belongsTo(models.DocumentVersion, { foreignKey: "version_id" });
-ActivityLog.belongsTo(models.Comment, { foreignKey: "comment_id" });
+ActivityLog.belongsTo(models.User, { foreignKey: "user_id", as: "user" });
+ActivityLog.belongsTo(models.Document, { foreignKey: "document_id", as: "document" });
+ActivityLog.belongsTo(models.DocumentVersion, { foreignKey: "version_id", as: "version" });
+ActivityLog.belongsTo(models.Comment, { foreignKey: "comment_id", as: "comment" });
 
 // Relação 1:1
 User.hasOne(Client, { foreignKey: "user_id", as: "client" });

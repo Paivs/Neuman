@@ -1,4 +1,4 @@
-const { User, Comment } = require("../models");
+const { User, Comment, Document } = require("../models");
 const logActivity = require("../utils/activityLogger");
 
 exports.create = async (req, res) => {
@@ -19,14 +19,18 @@ exports.create = async (req, res) => {
       content,
     });
 
-    // Registra atividade de criação de comentário
+    // Busca os dados reais para descrição amigável
+    const user = await User.findByPk(author_id);
+    const document = await Document.findByPk(document_id);
+
+    // Registra atividade de criação de comentário com dados legíveis
     await logActivity({
       userId: author_id,
       action: "create_comment",
       documentId: document_id,
       versionId: version_id,
       commentId: comment.id,
-      description: `Comentário criado pelo usuário ${author_id} no documento ${document_id}`,
+      description: `Comentário criado pelo usuário ${user?.name || author_id} (${author_id}) no documento "${document?.title || document_id}" (${document_id})`,
     });
 
     res.status(201).json(comment);
