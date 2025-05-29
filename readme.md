@@ -19,9 +19,8 @@ A infraestrutura do projeto inclui:
 - Design: Figma / Canva
 - BD: MySQL
 - Docs: Docs do Google compartilhado
-- Infra: VPS ubuntu hostinger
-- Nginx webserver/proxy reverso
-- Docker
+- Infra: VPS ubuntu hostinger com Coolify
+- Docker (Dockerfile)
 - CDN firebase
 - Versionamento: Git
 

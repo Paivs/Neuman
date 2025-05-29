@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const logActivity = require('../utils/activityLogger');
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "segredo_default";
 
@@ -9,7 +11,6 @@ exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // Verificar se o usuário já existe
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({
@@ -22,10 +23,16 @@ exports.register = async (req, res) => {
       name,
       email,
       password_hash: hash,
-      role: "lawyer", // se quiser permitir escolha, valide o role no req.body
+      role: "lawyer",
     });
 
-    // Criar token após registro
+    // Log criação de usuário
+    await logActivity({
+      userId: user.id,
+      action: 'register_user',
+      description: `Usuário ${user.name} registrado com o email ${user.email}`,
+    });
+
     const token = jwt.sign(
       { id: user.id, name: user.name, email: user.email, role: user.role },
       JWT_SECRET,
@@ -35,7 +42,7 @@ exports.register = async (req, res) => {
     res.status(201).json({
       message: "Usuário criado com sucesso",
       userId: user.id,
-      token // Retornar token no registro também
+      token
     });
   } catch (error) {
     console.error(error);
@@ -67,10 +74,17 @@ exports.login = async (req, res) => {
         .json({ message: "Credenciais inválidas" });
     }
 
+    // Log login com sucesso
+    await logActivity({
+      userId: user.id,
+      action: 'login_user',
+      description: `Usuário ${user.name} efetuou login`,
+    });
+
     const token = jwt.sign(
       { id: user.id, name: user.name, email: user.email, role: user.role },
       JWT_SECRET,
-      { expiresIn: "10m" } // você pode aumentar para produção, ex: 1h ou mais
+      { expiresIn: "10m" }
     );
 
     const { id, name, email: userEmail, role } = user;

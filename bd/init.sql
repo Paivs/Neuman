@@ -96,3 +96,19 @@ CREATE TABLE comments (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE activity_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL,
+  action VARCHAR(100) NOT NULL,
+  document_id UUID,
+  version_id UUID,
+  comment_id UUID,
+  description TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  -- Chaves estrangeiras
+  CONSTRAINT fk_activity_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_activity_document FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE SET NULL,
+  CONSTRAINT fk_activity_version FOREIGN KEY (version_id) REFERENCES document_versions(id) ON DELETE SET NULL,
+  CONSTRAINT fk_activity_comment FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE SET NULL
+);

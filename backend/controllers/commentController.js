@@ -1,28 +1,32 @@
-const {
-  Document,
-  DocumentVersion,
-  DocumentPermission,
-  User,
-  Comment,
-  Sequelize,
-} = require("../models");
+const { User, Comment } = require("../models");
+const logActivity = require("../utils/activityLogger");
 
 exports.create = async (req, res) => {
   try {
     const { document_id, version_id, content } = req.body;
     const author_id = req.user.id;
 
-    console.log(JSON.stringify(req.body))
-
     if (!content || !document_id) {
-      return res.status(400).json({ message: "Conteúdo e document_id são obrigatórios" });
+      return res
+        .status(400)
+        .json({ message: "Conteúdo e document_id são obrigatórios" });
     }
 
     const comment = await Comment.create({
-      document_id: document_id,
-      version_id: version_id,
+      document_id,
+      version_id,
       author_id,
       content,
+    });
+
+    // Registra atividade de criação de comentário
+    await logActivity({
+      userId: author_id,
+      action: "create_comment",
+      documentId: document_id,
+      versionId: version_id,
+      commentId: comment.id,
+      description: `Comentário criado pelo usuário ${author_id} no documento ${document_id}`,
     });
 
     res.status(201).json(comment);
@@ -31,7 +35,6 @@ exports.create = async (req, res) => {
     res.status(500).json({ message: "Erro ao criar comentário" });
   }
 };
-
 
 exports.fetchCommentsByDocumentVersionId = async (req, res) => {
   try {
@@ -47,10 +50,10 @@ exports.fetchCommentsByDocumentVersionId = async (req, res) => {
         {
           model: User,
           as: "author",
-          attributes: ["id", "name", "email"]
-        }
+          attributes: ["id", "name", "email"],
+        },
       ],
-      order: [["created_at", "DESC"]]
+      order: [["created_at", "DESC"]],
     });
 
     res.status(200).json(comments);
@@ -58,4 +61,4 @@ exports.fetchCommentsByDocumentVersionId = async (req, res) => {
     console.error("Erro ao buscar comentários:", error);
     res.status(500).json({ message: "Erro ao buscar comentários" });
   }
-}
+};

@@ -1,8 +1,5 @@
 const { User, Client } = require("../models");
-const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
-
-const JWT_SECRET = process.env.JWT_SECRET || "segredo_default";
 
 // Buscar todos os clientes
 exports.getAllClients = async (req, res) => {
@@ -56,7 +53,7 @@ exports.createClient = async (req, res) => {
     }
 
     // Gera uma senha padrão aleatória (em produção, envie por e-mail ou force alteração)
-    const defaultPassword = await bcrypt.hash("neuman@123", 10)//uuidv4();
+    const defaultPassword = await bcrypt.hash("neuman@123", 10); //uuidv4();
 
     // Cria o usuário
     const user = await User.create({

@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
-const { Client } = require('../models');
+// const { Client } = require('../models');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo_default';
