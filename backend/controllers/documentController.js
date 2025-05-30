@@ -3,32 +3,13 @@ const {
   DocumentVersion,
   DocumentPermission,
   User,
+  CommentDocument,
+  GroupDocument,
 } = require("../models");
 const { v4: uuidv4 } = require("uuid");
 const logActivity = require("../utils/activityLogger");
 
-// Buscar todos os documentos do usuário (com versões e permissões)
-exports.findAll = async (req, res) => {
-  try {
-    const owner_id = req.user.id;
-
-    const documents = await Document.findAll({
-      where: { owner_id, is_archived: false },
-      include: [
-        { model: DocumentVersion, as: "versions" },
-        { model: DocumentPermission, as: "permissions" },
-      ],
-      order: [["created_at", "DESC"]],
-    });
-
-    res.json(documents);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erro ao buscar documentos" });
-  }
-};
-
-// Buscar um documento específico (com relações)
+// Buscar documento específico com relações
 exports.findOne = async (req, res) => {
   try {
     const document = await Document.findByPk(req.params.id, {
@@ -56,6 +37,13 @@ exports.findOne = async (req, res) => {
           ],
         },
         { model: User, as: "owner", attributes: ["id", "name", "email"] },
+        { model: GroupDocument, as: "group_document" },
+        {
+          model: CommentDocument,
+          as: "comments",
+          include: [{ model: User, as: "author", attributes: ["id", "name"] }],
+          order: [["created_at", "DESC"]],
+        },
       ],
     });
 
@@ -70,19 +58,20 @@ exports.findOne = async (req, res) => {
   }
 };
 
-// Criar um novo documento
+// Criar documento + versão + permissão + log
 exports.create = async (req, res) => {
   try {
-    const { title, description, file_url, size, type } = req.body;
+    const { title, description, file_url, size, type, group_document_id } = req.body;
     const owner_id = req.user.id;
     const tenant_id = req.user.tenant_id || uuidv4();
 
-    // 1. Criar o documento
+    // 1. Criar documento
     const document = await Document.create({
       title,
       description,
       owner_id,
       tenant_id,
+      group_document_id,
     });
 
     if (!file_url) {
@@ -91,7 +80,7 @@ exports.create = async (req, res) => {
       });
     }
 
-    // 2. Criar a primeira versão
+    // 2. Criar primeira versão
     const version = await DocumentVersion.create({
       document_id: document.id,
       version_number: 1,
@@ -102,18 +91,18 @@ exports.create = async (req, res) => {
       last_modified: new Date(),
     });
 
-    // 3. Atualizar documento com a versão atual
+    // 3. Atualizar documento com versão atual
     document.current_version_id = version.id;
     await document.save();
 
-    // 4. Criar permissão para o dono
+    // 4. Criar permissão de edição para dono
     await DocumentPermission.create({
       document_id: document.id,
       user_id: owner_id,
       permission: "edit",
     });
 
-    // 5. Log de criação
+    // 5. Log
     await logActivity({
       userId: owner_id,
       action: "create_document",
@@ -121,11 +110,12 @@ exports.create = async (req, res) => {
       description: `Documento "${title}" criado pelo usuário ${owner_id}`,
     });
 
-    // 6. Buscar documento completo
+    // 6. Buscar documento criado com relações
     const createdDocument = await Document.findByPk(document.id, {
       include: [
         { model: DocumentVersion, as: "versions" },
         { model: DocumentPermission, as: "permissions" },
+        { model: GroupDocument, as: "group_document" },
       ],
     });
 
@@ -136,7 +126,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// Atualizar um documento (título e descrição)
+// Atualizar título e descrição
 exports.update = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -153,7 +143,6 @@ exports.update = async (req, res) => {
 
     await document.save();
 
-    // Log de atualização
     await logActivity({
       userId: req.user.id,
       action: "update_document",
@@ -165,6 +154,7 @@ exports.update = async (req, res) => {
       include: [
         { model: DocumentVersion, as: "versions" },
         { model: DocumentPermission, as: "permissions" },
+        { model: GroupDocument, as: "group_document" },
       ],
     });
 
@@ -175,7 +165,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// Arquivar (soft delete) um documento
+// Arquivar documento (soft delete)
 exports.archive = async (req, res) => {
   try {
     const { id } = req.params;
@@ -188,7 +178,6 @@ exports.archive = async (req, res) => {
     document.is_archived = true;
     await document.save();
 
-    // Log de arquivamento
     await logActivity({
       userId: req.user.id,
       action: "archive_document",
@@ -203,10 +192,10 @@ exports.archive = async (req, res) => {
   }
 };
 
-// Adicionar uma nova versão ao documento
+// Adicionar nova versão com comentário opcional
 exports.addVersion = async (req, res) => {
   try {
-    const { id } = req.params; // documento
+    const { id } = req.params;
     const { file_url, size, type, comment } = req.body;
     const uploaded_by = req.user.id;
 
@@ -242,15 +231,14 @@ exports.addVersion = async (req, res) => {
     document.current_version_id = newVersion.id;
     await document.save();
 
-    if (comment && comment.trim() !== "") {
-      const newComment = await Comment.create({
+    if (comment && comment.trim()) {
+      const newComment = await CommentDocument.create({
         document_id: id,
         version_id: newVersion.id,
         author_id: uploaded_by,
         content: comment.trim(),
       });
 
-      // Log comentário criado junto da versão
       await logActivity({
         userId: uploaded_by,
         action: "create_comment",
@@ -261,7 +249,6 @@ exports.addVersion = async (req, res) => {
       });
     }
 
-    // Log nova versão criada
     await logActivity({
       userId: uploaded_by,
       action: "add_version",

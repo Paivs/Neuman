@@ -1,23 +1,23 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Comment = sequelize.define("Comment", {
+const CommentDocument = sequelize.define('CommentDocument', {
   id: {
     type: DataTypes.UUID,
-    primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
   },
   document_id: {
     type: DataTypes.UUID,
-    allowNull: false, // já que é ON DELETE CASCADE
+    allowNull: false,
   },
   version_id: {
     type: DataTypes.UUID,
-    allowNull: true, // ON DELETE SET NULL
+    allowNull: true,
   },
   author_id: {
     type: DataTypes.UUID,
-    allowNull: true, // ON DELETE SET NULL
+    allowNull: true,
   },
   content: {
     type: DataTypes.TEXT,
@@ -28,8 +28,9 @@ const Comment = sequelize.define("Comment", {
     defaultValue: DataTypes.NOW,
   },
 }, {
-  tableName: "comments",
+  tableName: 'comment_documents',
   timestamps: false,
+  underscored: true,
 });
 
-module.exports = Comment;
+module.exports = CommentDocument;

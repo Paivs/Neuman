@@ -1,6 +1,18 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
+  // Bypass em ambiente de teste
+  if (process.env.NODE_ENV === 'test') {
+    // Usuário fixo para teste
+    req.user = {
+      id: '3df1f587-62d3-4d57-88aa-cdd1667835a2',
+      name: 'Von Neuman',
+      email: 'neuman@mail.com',
+      role: 'lawyer',
+    };
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {

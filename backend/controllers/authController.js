@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "segredo_default";
 
 // Registro de usuário
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     const existingUser = await User.findOne({ where: { email } });
@@ -16,6 +16,12 @@ exports.register = async (req, res) => {
       return res.status(400).json({
         message: "Email já está em uso"
       });
+    }
+
+    if(role != "lawyer" && role != "client"){
+      return res.status(400).json({
+        message: "Role inválido"
+      })
     }
 
     const hash = await bcrypt.hash(password, 10);

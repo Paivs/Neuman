@@ -1,4 +1,3 @@
-// models/Client.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
@@ -21,26 +20,39 @@ const Client = sequelize.define('Client', {
       key: 'id',
     },
   },
-  name: DataTypes.STRING,
+  name: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   cpf: {
     type: DataTypes.STRING,
     unique: true,
+    allowNull: true,
   },
-  company_name: DataTypes.STRING,
+  company_name: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   cnpj: {
     type: DataTypes.STRING,
     unique: true,
+    allowNull: true,
   },
-  phone: DataTypes.STRING,
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   case_code: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  address: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
 }, {
   tableName: 'clients',
-  timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: false,
+  timestamps: true
 });
 
 module.exports = Client;

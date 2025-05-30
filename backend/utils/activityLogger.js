@@ -1,18 +1,28 @@
-const ActivityLog = require('../models/ActivityLog');
+const ActivityLog = require("../models/ActivityLog");
 
-async function logActivity({ userId, action, documentId = null, versionId = null, commentId = null, description }) {
+async function logActivity({
+  userId,
+  action,
+  documentId = null,
+  groupDocumentId = null,
+  versionId = null,
+  commentDocumentId = null,
+  commentGroupDocumentId = null,
+  description,
+}) {
   try {
     await ActivityLog.create({
-      user_id: userId,
+      userId,
       action,
-      document_id: documentId,
-      version_id: versionId,
-      comment_id: commentId,
+      documentId,
+      groupDocumentId,
+      versionId,
+      commentDocumentId,
+      commentGroupDocumentId,
       description,
     });
   } catch (error) {
-    console.error('Erro ao registrar atividade:', error);
-    // Opcional: envie erro para serviço de log externo ou monitore aqui
+    console.error("Erro ao registrar atividade:", error);
   }
 }
 

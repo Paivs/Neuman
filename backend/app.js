@@ -1,13 +1,17 @@
 const express = require('express');                 //express
 const errorHandler = require('./middlewares/errorHandler'); 
 require('./config/database').authenticate();         //BD postgres
+const cors = require("cors");
+
+//import rotas
 const authRouter = require('./routes/auth');
 const document = require('./routes/document');
+const groupDocuments = require('./routes/groupDocuments');
 const comment = require('./routes/comment');
 const user = require('./routes/user');
-const cors = require("cors");
-const client = require('./routes/client');
 const dashboard = require('./routes/dashboard')
+const cases = require('./routes/case')
+const client = require('./routes/client');
 
 
 
@@ -31,6 +35,8 @@ app.use("/auth", authRouter); //precisa estar antes do middlware de auth
 app.use(authMiddleware);
 
 app.use("/users", user);
+app.use("/cases", cases);
+app.use("/group-documents", groupDocuments);
 app.use("/documents", document);
 app.use('/comments', comment);
 app.use('/clients', client);

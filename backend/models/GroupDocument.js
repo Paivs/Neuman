@@ -1,38 +1,40 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const DocumentPermission = sequelize.define(
-  "DocumentPermission",
+const GroupDocument = sequelize.define(
+  "GroupDocument",
   {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    document_id: {
+    owner_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    user_id: {
+    case_id: {
       type: DataTypes.UUID,
+      allowNull: true,
+    },
+    title: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
-    permission: {
-      type: DataTypes.ENUM("view", "edit", "comment"),
-      allowNull: false,
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    is_archived: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {
-    tableName: "document_permissions",
+    tableName: "group_documents",
     timestamps: true,
     underscored: true,
-    indexes: [
-      {
-        unique: true,
-        fields: ["document_id", "user_id"],
-      },
-    ],
   }
 );
 
-module.exports = DocumentPermission;
+module.exports = GroupDocument;

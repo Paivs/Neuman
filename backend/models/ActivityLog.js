@@ -1,4 +1,3 @@
-// models/ActivityLog.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
@@ -10,7 +9,7 @@ const ActivityLog = sequelize.define(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    user_id: {
+    userId: {                  // camelCase aqui
       type: DataTypes.UUID,
       allowNull: false,
     },
@@ -18,15 +17,23 @@ const ActivityLog = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    document_id: {
+    documentId: {              // camelCase aqui
       type: DataTypes.UUID,
       allowNull: true,
     },
-    version_id: {
+    groupDocumentId: {         // camelCase aqui
       type: DataTypes.UUID,
       allowNull: true,
     },
-    comment_id: {
+    versionId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    commentDocumentId: {       // camelCase aqui
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    commentGroupDocumentId: {  // camelCase aqui
       type: DataTypes.UUID,
       allowNull: true,
     },
@@ -34,7 +41,7 @@ const ActivityLog = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    created_at: {
+    createdAt: {               // camelCase aqui
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -43,6 +50,7 @@ const ActivityLog = sequelize.define(
   {
     tableName: "activity_logs",
     timestamps: false,
+    underscored: true,
   }
 );
 

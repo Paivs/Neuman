@@ -15,6 +15,10 @@ const Document = sequelize.define('Document', {
     type: DataTypes.UUID,
     allowNull: true
   },
+  group_document_id: {
+    type: DataTypes.UUID,
+    allowNull: true
+  },
   title: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -30,15 +34,11 @@ const Document = sequelize.define('Document', {
   is_archived: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
   }
 }, {
   tableName: 'documents',
-  timestamps: true,
-  underscored: true
+  timestamps: true,       // habilita created_at e updated_at automáticos
+  underscored: true      // usa snake_case para colunas
 });
 
 module.exports = Document;

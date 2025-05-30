@@ -10,17 +10,6 @@ const router = express.Router();
  *   description: Endpoints para gerenciamento de documentos
  */
 
-/**
- * @swagger
- * /documents:
- *   get:
- *     summary: Lista todos os documentos
- *     tags: [Documentos]
- *     responses:
- *       200:
- *         description: Lista de documentos retornada com sucesso
- */
-router.get('/', documentController.findAll);
 
 /**
  * @swagger

@@ -62,6 +62,11 @@ router.get('/:id', clientController.getClientById);
  *             required:
  *               - name
  *               - email
+ *               - phone
+ *               - document
+ *               - address
+ *               - type
+ *               - case_code
  *             properties:
  *               name:
  *                 type: string
@@ -71,6 +76,12 @@ router.get('/:id', clientController.getClientById);
  *               phone:
  *                 type: string
  *               address:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               case_code:
+ *                 type: string
+ *               document:
  *                 type: string
  *     responses:
  *       201:
