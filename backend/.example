@@ -1,0 +1,4 @@
+JWT_EXP_TIME=50h
+DB_NAME="neuman"
+DB_USER="neuman_user"
+DB_PASS="supersecret"
