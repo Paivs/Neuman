@@ -34,10 +34,6 @@ export async function apiFetch(path, options = {}) {
       headers,
     });
 
-    console.log("res: " + res)
-    console.log("res.status: " + res.status)
-    console.log("res.ok: " + res.ok)
-
     // Token expirado
     if (res.status === 401 || res.status === 403) {
       toast.error("Sessão expirada. Faça login novamente.");

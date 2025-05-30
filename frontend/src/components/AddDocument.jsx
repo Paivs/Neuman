@@ -62,12 +62,12 @@ export function AddDocument({onAddDocument}) {
         size: formData.file.size,
       };
 
-      createDocument(payload);
+      await createDocument(payload);
 
       toast.success("Documento enviado com sucesso!");
       setFormData({ title: "", description: "", file: null });
-      setOpen(false);
       onAddDocument();
+      setOpen(false);
     } catch (err) {
       toast.error("Erro ao enviar documento.");
       console.error(err);
