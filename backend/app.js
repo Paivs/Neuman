@@ -1,6 +1,7 @@
 const express = require('express');                 //express
 const errorHandler = require('./middlewares/errorHandler'); 
 require('./config/database').authenticate();         //BD postgres
+const logger = require('./utils/logger');
 const cors = require("cors");
 
 //import rotas
@@ -23,7 +24,13 @@ const authMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
 app.use(express.json());
+
 app.use(cors());
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url} - IP: ${req.ip}`);
+  next();
+});
+
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs)); //documentação em tempo real, serve para testes também

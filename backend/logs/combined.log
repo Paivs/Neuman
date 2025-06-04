@@ -1,1 +1,10 @@
 {"level":"error","message":{},"timestamp":"2025-05-29T00:23:58.801Z"}
+2025-06-03 21:42:38 [[32minfo[39m]: POST /auth/login - IP: ::1
+2025-06-03 21:43:29 [[32minfo[39m]: POST /auth/register - IP: ::1
+2025-06-03 21:43:34 [[32minfo[39m]: POST /auth/login - IP: ::1
+2025-06-03 21:43:38 [[32minfo[39m]: GET /dashboard/summary - IP: ::1
+2025-06-03 21:43:38 [[32minfo[39m]: GET /dashboard/summary - IP: ::1
+2025-06-03 21:43:38 [[32minfo[39m]: GET /dashboard/user-docs-stats - IP: ::1
+2025-06-03 21:43:38 [[32minfo[39m]: GET /dashboard/user-docs-stats - IP: ::1
+2025-06-03 21:43:48 [[32minfo[39m]: GET /clients - IP: ::1
+2025-06-03 21:43:48 [[32minfo[39m]: GET /clients - IP: ::1

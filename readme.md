@@ -12,6 +12,8 @@ A infraestrutura do projeto inclui:
   - JWT
   - Sequelize
   - Jest
+  - ESLint
+  - Cors
 - Front: 
   - Next.js
   - Tailwind CSS
@@ -21,6 +23,7 @@ A infraestrutura do projeto inclui:
   - Lucide-react
   - React Hook Form + Zod
   - Zustand
+  - ESLint
 - Design: Figma / Canva
 - BD: Postgres
 - Docs: Docs do Google compartilhado

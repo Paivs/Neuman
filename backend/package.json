@@ -3,6 +3,8 @@
     "@adminjs/sequelize": "^4.0.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "forest-express-sequelize": "^9.6.0",
     "jsonwebtoken": "^9.0.2",
@@ -15,9 +17,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0",
-    "winston": "^3.17.0",
-    "dotenv": "^16.5.0",
-    "cross-env": "^7.0.3"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@babel/helper-compilation-targets": "^7.27.2",
