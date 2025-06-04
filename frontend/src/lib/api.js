@@ -45,7 +45,7 @@ export async function apiFetch(path, options = {}) {
     if (!res.ok) {
       const errorData = await res.json();
       // toast.error(errorData.message || "Erro ao comunicar com o servidor.");
-      throw new Error(errorData.message || "Erro de requisição");
+      console.log(errorData.message || "Erro de requisição");
     }
 
     return res.json();

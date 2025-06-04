@@ -67,7 +67,7 @@ export default function LoginForm({ userType }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="seuemail@example.com"
-          className="mt-1 bg-slate-700/50 border-slate-600  text-white text-white"
+          className="mt-1 bg-slate-700/50 border-slate-600  text-white"
         />
       </div>
       <div>

@@ -1,14 +1,8 @@
 // lib/documents.js
 import { api } from "./api";
 
-// Buscar todos os documentos (exemplo de listagem)
 export async function fetchDocuments() {
-  try {
-    const documents = await api.get("documents");
-    return documents; // espera que retorne um array
-  } catch (error) {
-    throw new Error(error.message || "Erro ao buscar documentos");
-  }
+  //nao faz mais sentido
 }
 
 // Buscar documento específico por ID
@@ -22,9 +16,23 @@ export async function fetchDocumentById(id) {
 }
 
 // Criar novo documento
-export async function createDocument(data) {
+export async function createDocument(
+  title,
+  description,
+  file_url,
+  size,
+  type,
+  group_document_id
+) {
   try {
-    const newDocument = await api.post("documents", data);
+    const newDocument = await api.post("documents", {
+      title,
+      description,
+      file_url,
+      size,
+      type,
+      group_document_id,
+    });
     return newDocument;
   } catch (error) {
     throw new Error(error.message || "Erro ao criar documento");
@@ -41,7 +49,7 @@ export async function updateDocument(id, data) {
   }
 }
 
-// Deletar documento
+// Arquivar um documento
 export async function deleteDocument(id) {
   try {
     await api.del(`documents/${id}`);
@@ -51,9 +59,12 @@ export async function deleteDocument(id) {
   }
 }
 
-export async function createDocumentVersion(id, data){
+export async function createDocumentVersion(
+  id,
+  file_url, size, type, comment
+) {
   try {
-    const newVersion = await api.post(`documents/version/${id}`, data);
+    const newVersion = await api.post(`documents/version/${id}`, {file_url, size, type, comment});
     return newVersion;
   } catch (error) {
     throw new Error(error.message || "Erro ao enviar nova versão do documento");

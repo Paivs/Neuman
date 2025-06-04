@@ -1,7 +1,6 @@
 // lib/user.js
 import { api } from "./api";
 
-
 export async function fetchClients() {
   try {
     const clients = await api.get("clients");
@@ -20,14 +19,28 @@ export async function fetchClientsById(id) {
   }
 }
 
-
-export async function createClient(data) {
+export async function createClient(
+  name,
+  email,
+  phone,
+  document,
+  address,
+  type,
+  case_code
+) {
   try {
-    const newClient = await api.post("clients", data);
-    console.log("newClient: ", newClient)
+    const newClient = await api.post("clients", {
+      name,
+      email,
+      phone,
+      document,
+      address,
+      type,
+      case_code,
+    });
+    console.log("newClient: ", newClient);
     return newClient;
   } catch (error) {
     throw new Error(error.message || "Erro ao criar usuário");
   }
 }
-

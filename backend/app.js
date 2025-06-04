@@ -17,6 +17,7 @@ const client = require('./routes/client');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swagger');
+
 const authMiddleware = require('./middlewares/authMiddleware');
 
 

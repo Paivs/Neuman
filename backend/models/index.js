@@ -100,16 +100,15 @@ GroupDocument.hasMany(CommentGroupDocument, {
 // Logs de atividade
 ActivityLog.belongsTo(User, { foreignKey: "user_id", as: "user" });
 ActivityLog.belongsTo(Document, { foreignKey: "document_id", as: "document" });
-ActivityLog.belongsTo(DocumentVersion, {
-  foreignKey: "version_id",
-  as: "version",
-});
+ActivityLog.belongsTo(DocumentVersion, { foreignKey: "version_id", as: "version" });
+
 ActivityLog.belongsTo(CommentDocument, {
-  foreignKey: "comment_id",
+  foreignKey: "comment_document_id",  // coluna correta no banco
   as: "comment_document",
 });
+
 ActivityLog.belongsTo(CommentGroupDocument, {
-  foreignKey: "comment_id",
+  foreignKey: "comment_group_document_id",  // coluna correta no banco
   as: "comment_group_document",
 });
 

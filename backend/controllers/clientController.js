@@ -27,6 +27,7 @@ exports.getClientById = async (req, res) => {
     const client = await Client.findByPk(id, {
       include: {
         model: User,
+        as: "user",
         attributes: ["id", "name", "email", "created_at"],
       },
     });
