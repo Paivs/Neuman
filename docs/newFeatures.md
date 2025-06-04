@@ -1,4 +1,4 @@
-# Tarefas para Novo Colaborador - Projeto Neuman
+# Tarefas - Projeto Neuman
 
 ---
 
