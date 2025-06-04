@@ -6,7 +6,12 @@ Neuman é uma plataforma de versionamento, gerenciamento e compartilhamento de d
 # Sobre a infraestrutura da aplicação
 A infraestrutura do projeto inclui:
 
-- Back: Node.js
+- Back: 
+  - Node.js
+  - Swagger
+  - JWT
+  - Sequelize
+  - Jest
 - Front: 
   - Next.js
   - Tailwind CSS
@@ -17,7 +22,7 @@ A infraestrutura do projeto inclui:
   - React Hook Form + Zod
   - Zustand
 - Design: Figma / Canva
-- BD: MySQL
+- BD: Postgres
 - Docs: Docs do Google compartilhado
 - Infra: VPS ubuntu hostinger com Coolify
 - Docker (Dockerfile)
